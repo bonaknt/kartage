@@ -1,0 +1,10 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+{{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+
+    {{ form_row(form) }}
+
+    <div>
+        <input type="submit" value="Enregistrer" />
+    </div>
+{{ form_end(form) }}

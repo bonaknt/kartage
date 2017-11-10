@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="titre-marge">Liste des liens</h1>
+<div class="container">           
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Titre</th>
+        <th>Liens</th>
+        <th>Description</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for link in links %}
+            <tr>
+                <td>{{ link.title }}</td>
+                <td><a href="{{ link.link }}">{{ link.link }}</a></td>
+                <td>{{ link.description}}</td>
+                <td><a href="{{ path('lien_view', {'id': link.id }) }}">Voir</a></td>
+            </tr>
+
+        {% endfor %}
+
+    </tbody>
+  </table>
+</div>
+{% endblock %}

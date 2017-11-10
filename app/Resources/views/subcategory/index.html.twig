@@ -1,0 +1,39 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block body %}
+    <h1>Liste sous-catégories</h1>
+
+<div class="container"> 
+<p class="text-right"><a class="align-right" href="{{ path('subcategory_new') }}">Créer une nouvelle sous-catégorie</a> </p><br />        
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Titre</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for subCategory in subCategories %}
+            <tr>
+                <td>{{ subCategory.id }}</td>
+                <td><a href="{{ path('subcategory_show', { 'id': subCategory.id }) }}">{{ subCategory.title }}</a></td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('subcategory_show', { 'id': subCategory.id }) }}">Voir</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('subcategory_edit', { 'id': subCategory.id }) }}">modifier</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+
+        {% endfor %}
+
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

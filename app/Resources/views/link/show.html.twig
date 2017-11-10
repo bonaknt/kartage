@@ -1,0 +1,50 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block body %}
+    <h1>Lien {{ link.title}}</h1> <br />
+
+<div class="container">
+        
+    <table class="table table-striped">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ link.id }}</td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+                <td>{{ link.title }}</td>
+            </tr>
+            <tr>
+                <th>Lien</th>
+                <td>{{ link.link }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ link.description }}</td>
+            </tr>
+            <tr>
+                <th>Utilisateur</th>
+                <td>{{ link.addUser }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{% if link.date %}{{ link.date|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    <ul>
+        <li>
+            <a href="{{ path('link_index') }}">Retour à la liste</a>
+        </li>
+        <li>
+            <a href="{{ path('link_edit', { 'id': link.id }) }}">Modifier</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Supprimer">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

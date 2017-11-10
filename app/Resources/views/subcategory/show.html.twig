@@ -1,0 +1,43 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block body %}
+    <h1>Sous-catégorie {{subCategory.title}}</h1>
+
+<div class="container">
+         
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Titre</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+        
+            <tr>
+
+                <td> {{ subCategory.id }} </td>
+                <td>{{ subCategory.title }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('subcategory_edit', { 'id': subCategory.id }) }}">Modifier</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('subcategory_index') }}">Retour à la liste</a>
+                        </li>
+                        <li>
+                            {{ form_start(delete_form) }}
+                                <input type="submit" value="Delete">
+                            {{ form_end(delete_form) }}
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+
+        
+
+    </tbody>
+  </table>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="titre-marge">Lien</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ link.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ link.title }}</td>
+            </tr>
+            <tr>
+                <th>Link</th>
+                <td><a href="{{ link.link }}">{{ link.link }}</a></td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ link.description }}</td>
+            </tr>
+            <tr>
+                <th>Utilisateur</th>
+                <td>{{ link.addUser }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{% if link.date %}{{ link.date|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <input type="button" value="Retour à la liste" onClick="document.location.href = document.referrer" />
+
+        </li>
+
+    </ul>
+{% endblock %}

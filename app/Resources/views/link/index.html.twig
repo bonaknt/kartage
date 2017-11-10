@@ -1,0 +1,46 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block body %}
+    <h1>Liste des liens</h1>
+
+
+<div class="container">
+<p class="text-right"><a class="align-right" href="{{ path('link_new') }}">Créer un nouveau lien</a> </p><br />
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Titre</th>
+        <th>Liens</th>
+        <th>Description</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for link in links %}
+            <tr>
+
+                <td> {{ link.id }} </td>
+                <td>{{ link.title }}</td>
+                <td>{{ link.link }}</td>
+                <td>{{ link.description}}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('link_show', { 'id': link.id }) }}">Voir</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('link_edit', { 'id': link.id }) }}">Modifier</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+
+        {% endfor %}
+
+    </tbody>
+  </table>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <section id="portfolio">
+
+    <h4>Vous êtes dans la catégorie {{ category.title }}</h4>
+
+      <div class="container">
+        <h2 class="text-center">Sous-Catégories</h2>
+        <hr class="star-primary">
+        <div class="row">
+        {% for subCategory in subCategories %}
+          <div class="col-lg-3 portfolio-item">
+            <a class="portfolio-link" href="{{ path('subcategorie_show', { 'id': category.id, 'idSousCategorie': subCategory.id }) }}" >
+              <div style="background-color:#445567; width:100%; height:200px;">
+              <span class="tspan" style="text-align:center;">{{ subCategory.title }} </span>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <a href="{{ path('homepage') }}">Retour à la liste des catégories</a>
+    </section>
+
+{% endblock %}

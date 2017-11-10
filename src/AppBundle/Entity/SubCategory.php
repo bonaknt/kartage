@@ -1,0 +1,142 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+
+/**
+ * SubCategory
+ *
+ * @ORM\Table(name="sub_category")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\SubCategoryRepository")
+ */
+class SubCategory
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=255)
+     */
+    private $title;
+
+    /**
+     * @Gedmo\Slug(fields={"title"})
+     * @ORM\Column(name="slug", type="string", length=255)
+     */
+    private $slug;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Link", mappedBy="sousCategories", cascade={"persist"})
+     */
+    private $links;
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     *
+     * @return SubCategory
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->links = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add link
+     *
+     * @param \AppBundle\Entity\Link $link
+     *
+     * @return SubCategory
+     */
+    public function addLink(\AppBundle\Entity\Link $link)
+    {
+        $this->links[] = $link;
+
+        return $this;
+    }
+
+    /**
+     * Remove link
+     *
+     * @param \AppBundle\Entity\Link $link
+     */
+    public function removeLink(\AppBundle\Entity\Link $link)
+    {
+        $this->links->removeElement($link);
+    }
+
+    /**
+     * Get links
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLinks()
+    {
+        return $this->links;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     *
+     * @return SubCategory
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+}

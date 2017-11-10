@@ -1,0 +1,46 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block body %}
+    <h1>Categorie {{category.title }}</h1>
+
+
+<div class="container">
+         
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Titre</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+        
+            <tr>
+
+                <td> {{ category.id }} </td>
+                <td>{{ category.title }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('category_edit', { 'id': category.id }) }}">Modifier</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('subcategory_new', { 'id': category.id }) }}">Creation sous-catégorie</a>
+                        </li>
+                        <li>
+                            {{ form_start(delete_form) }}
+                                <input type="submit" value="Delete">
+                            {{ form_end(delete_form) }}
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+
+        
+
+    </tbody>
+  </table>
+</div>
+    
+{% endblock %}
