@@ -33,6 +33,29 @@ class LinkRepository extends \Doctrine\ORM\EntityRepository
 		return $categoryArray;
 	}
 
+	public function findFramework()
+	{
+		$query = $this->_em->createQuery('SELECT s FROM AppBundle:Framework s');
+		$results = $query->getResult();
+
+		$frameworkArray = [];
+
+		// ajout de l'index 0
+		array_unshift($frameworkArray, "");
+
+		foreach ($results as $framework) {
+			array_push($frameworkArray, $framework->getTitle());
+		}
+
+		/*
+		 *	Suppression de l'index 0 -> pour que les array keys
+		 * 	soit en accord avec les IDs de la table Species
+		 */
+		unset($frameworkArray[0]);
+
+		return $frameworkArray;
+	}
+
 	public function findSubCategory()
 	{
 		$query = $this->_em->createQuery('SELECT s FROM AppBundle:SubCategory s');
@@ -65,15 +88,85 @@ class LinkRepository extends \Doctrine\ORM\EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function bySousCategorie($sousCategorie, $categorie)
+    public function bySousCategorieTotal($sousCategorie, $categorie, $framework, $published)
     {
          $qb = $this->createQueryBuilder('u')
                     ->select('u')
                     ->where('u.sousCategories = :sousCategorie')
                     ->andWhere('u.categories = :categorie')
+                    ->andWhere('u.frameworks = :framework')
+                    ->andWhere('u.published = :published')
                     ->orderBy('u.id')
                     ->setParameter('sousCategorie', $sousCategorie)
-                    ->setParameter('categorie', $categorie);
+                    ->setParameter('categorie', $categorie)
+                    ->setParameter('published', $published)
+                    ->setParameter('framework', $framework);
+        return $qb->getQuery()->getResult();
+    }
+
+    public function bySousCategorie($sousCategorie, $categorie, $framework, $published, $offset, $limit)
+    {
+         $qb = $this->createQueryBuilder('u')
+                    ->select('u')
+                    ->where('u.sousCategories = :sousCategorie')
+                    ->andWhere('u.categories = :categorie')
+                    ->andWhere('u.frameworks = :framework')
+                    ->andWhere('u.published = :published')
+                    ->orderBy('u.id')
+                    ->setFirstResult($offset)
+   					->setMaxResults($limit)
+                    ->setParameter('sousCategorie', $sousCategorie)
+                    ->setParameter('categorie', $categorie)
+                    ->setParameter('published', $published)
+                    ->setParameter('framework', $framework);
+        return $qb->getQuery()->getResult();
+    }
+
+    public function byUser($user, $published, $offset, $limit)
+    {
+         $qb = $this->createQueryBuilder('u')
+                    ->select('u')
+                    ->where('u.addUser = :user')
+                    ->andWhere('u.published = :published')
+                    ->orderBy('u.id')
+                    ->setParameter('user', $user)
+                    ->setFirstResult($offset)
+   					->setMaxResults($limit)
+                    ->setParameter('published', $published);
+        return $qb->getQuery()->getResult();
+    }
+
+    public function byPublished($published, $offset, $limit)
+    {
+         $qb = $this->createQueryBuilder('u')
+                    ->select('u')
+                    ->where('u.published = :published')
+                    ->orderBy('u.id')
+                    ->setFirstResult($offset)
+   					->setMaxResults($limit)
+                    ->setParameter('published', $published);
+        return $qb->getQuery()->getResult();
+    }
+
+    public function byUserTotal($user, $published)
+    {
+         $qb = $this->createQueryBuilder('u')
+                    ->select('u')
+                    ->where('u.addUser = :user')
+                    ->andWhere('u.published = :published')
+                    ->orderBy('u.id')
+                    ->setParameter('user', $user)
+                    ->setParameter('published', $published);
+        return $qb->getQuery()->getResult();
+    }
+
+    public function byPublishedTotal($published)
+    {
+         $qb = $this->createQueryBuilder('u')
+                    ->select('u')
+                    ->where('u.published = :published')
+                    ->orderBy('u.id')
+                    ->setParameter('published', $published);
         return $qb->getQuery()->getResult();
     }
 

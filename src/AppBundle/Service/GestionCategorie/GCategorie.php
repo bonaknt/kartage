@@ -55,4 +55,35 @@ class GCategorie
     return $link;
 
   }
+
+  /**
+   * Vérifie si le texte est un spam ou non
+   *
+   * @param string $text
+   * @return bool
+   */
+  public function language($category, $formCategorie, $categories)
+  {
+
+    $link = new Link();
+
+    foreach ($category as $key => $value) {
+        if($key == $formCategorie){
+            $maCategorie = $value;
+        }
+    }
+
+    foreach ($categories as $keys => $values) {
+        if($maCategorie == $values->getTitle()){
+            $categorie = $values;
+        }
+    }
+
+    //dump($form['sousCategories']->getData()); die();
+    $link->setCategories($categorie->getId());
+
+
+    return $link;
+
+  }
 }

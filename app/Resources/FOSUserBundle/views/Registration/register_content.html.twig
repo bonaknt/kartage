@@ -1,10 +1,65 @@
 {% trans_default_domain 'FOSUserBundle' %}
+    <h1 class="titre-marge">Page d'inscription</h1>
 
-{{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+    <div class="well">
+        <div class="container">
+			{{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
 
-    {{ form_row(form) }}
+			  <div class="form-group">
 
-    <div>
-        <input type="submit" value="Enregistrer" />
+			    {{ form_label(form.username, "Pseudo", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+			    {# Affichage des erreurs pour ce champ précis. #}
+			    {{ form_errors(form.username) }}
+
+			    <div class="col-sm-12">
+			      {# Génération de l'input. #}
+			      {{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}
+			    </div>
+			  </div>
+
+			  <div class="form-group">
+
+			    {{ form_label(form.email, "Adresse Email", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+			    {# Affichage des erreurs pour ce champ précis. #}
+			    {{ form_errors(form.email) }}
+
+			    <div class="col-sm-12">
+			      {# Génération de l'input. #}
+			      {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+			    </div>
+			  </div>
+
+			  <div class="form-group">
+
+			    {{ form_label(form.plainPassword.first, "Mot de passe", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+			    {# Affichage des erreurs pour ce champ précis. #}
+			    {{ form_errors(form.plainPassword.first) }}
+
+			    <div class="col-sm-12">
+			      {# Génération de l'input. #}
+			      {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
+			    </div>
+			  </div>
+
+			  <div class="form-group">
+
+			    {{ form_label(form.plainPassword.second, "Confirmation mot de passe", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+			    {# Affichage des erreurs pour ce champ précis. #}
+			    {{ form_errors(form.plainPassword.second) }}
+
+			    <div class="col-sm-12">
+			      {# Génération de l'input. #}
+			      {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
+			    </div>
+			  </div>
+
+                <div class="form-group text-right">
+                    <button type="submit" class="btn btn-primary">S'inscrire</button>
+                </div>
+    {{ form_end(form) }}
+        </div>
     </div>
-{{ form_end(form) }}

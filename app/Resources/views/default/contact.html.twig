@@ -1,28 +1,79 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <section style="text-align:center; background-color: cornsilk;">
 
-      <h2>Contact</h2>
+<div id="contact" class="contact">
 
-      <p>Adresse mail de contact: bonaknt@gmail.com</p>
+<h3 class="text-center titleContact titre-marge">Contact</h3>
 
-      <p>Pour faire une demande d'ajout de lien sur le site veuillez respecter le format suivant:<br /><br />
+<div class="well">
+  {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
 
-      Objet: Demande d'ajout de lien<br /><br />
+  {# Les erreurs générales du formulaire. #}
+  {{ form_errors(form) }}
 
-      Contenu:<br /><br />
+  <div class="form-group">
 
-      Titre: Titre du lien<br />
-      Lien: www.monlien.com<br />
-      description: Petit description du lien<br />
-      Catégorie: PHP*<br />
-      Sous-catégorie: Cours*<br />
-      </p>
+    {{ form_label(form.name, "Nom", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
 
-      <p>*Veuillez choisir des catégorie uniquement présente sur le site.</p>
+    {# Affichage des erreurs pour ce champ précis. #}
+    {{ form_errors(form.name) }}
 
-      <p>N'hésitez à nous contacter pour des ajout de catégorie ou sous-catégorie ou encore des suggestions sur le site web.</p>
-    </section>
+    <div class="col-sm-12">
+      {# Génération de l'input. #}
+      {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+    </div>
+  </div>
+    <div class="form-group">
+
+    {{ form_label(form.email, "Email", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+    {# Affichage des erreurs pour ce champ précis. #}
+    {{ form_errors(form.email) }}
+
+    <div class="col-sm-12">
+      {# Génération de l'input. #}
+      {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+    </div>
+  </div>
+    <div class="form-group">
+
+    {{ form_label(form.subject, "Sujet", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+    {# Affichage des erreurs pour ce champ précis. #}
+    {{ form_errors(form.subject) }}
+
+    <div class="col-sm-12">
+      {# Génération de l'input. #}
+      {{ form_widget(form.subject, {'attr': {'class': 'form-control'}}) }}
+    </div>
+  </div>
+
+
+  <div class="form-group">
+    {{ form_label(form.content, "Contenu du message", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    {{ form_errors(form.content) }}
+    <div class="col-sm-12">
+      {{ form_widget(form.content, {'attr': {'class': 'form-control'}}) }}
+    </div>
+  </div>
+
+
+  {# Génération automatique des champs pas encore écrits.
+     Dans cet exemple, ce serait le champ CSRF (géré automatiquement par Symfony !)
+     et tous les champs cachés (type « hidden »). #}
+  {{ form_rest(form) }}
+
+  <div class="col-lg-12 text-left buttonMessage">
+    <div id="success"></div>
+    <button id="sendMessageButton" class="btn btn-primary btn-xl text-uppercase" type="submit">Envoyer Message</button>
+  </div>
+
+  {# Fermeture de la balise <form> du formulaire HTML #}
+  {{ form_end(form) }}
+</div>
+
+</div>
+
 
 {% endblock %}

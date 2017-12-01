@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>Kartage</title>
     {% block stylesheets %}{% endblock %}
     <link href="{{ asset('style.css') }}" rel="stylesheet">
@@ -38,28 +37,37 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
-              {% if app.user and is_granted('ROLE_ADMIN') %}
-              <li class="{% if adminMenu is defined %}active{% endif %}"><a href="{{ path('admin') }}"><span class="glyphicon glyphicon-cog"></span> Administration</a></li>
+            <li class="linkMenu"><a class="" href="{{ path('contact') }}"><span class="glyphicon glyphicon-cog"></span>Contact</a></li>
+            {% if app.user and is_granted('ROLE_USER') %}
+                 <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" >Connecté
+                <span class="caret"></span></a>
+                <ul class="dropdown-menu" style="background-color: #2c3e50;width: auto;padding: 0;">
+    
+              <li class="{% if adminMenu is defined %}active{% endif %}linkFond"><a class="link" href="{{ path('admin') }}"><span class="glyphicon glyphicon-cog"></span> Administration</a></li>
               
               {% endif %}
               {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                  <li class="dropdown">
+                  <li class="dropdown linkFond">
                       
-                          <span style="margin-left: 10px;"><a href="{{ path('fos_user_security_logout') }}">fermeture session</a></span>
+                          <span style="margin-left: 10px;"><a class="link" href="{{ path('fos_user_security_logout') }}">Déconnexion</a></span>
                       
                   </li>
               {% else %}
                   <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <a href="#" class="dropdown-toggle link" data-toggle="dropdown">
                       <span class="nav-item"></span> Pas connecté <b class="caret"></b></a>
                       <ul class="dropdown-menu">
-                          <li><a class="nav-link" href="{{ path('fos_user_security_login') }}">Connexion</a></li>
-                          <!-- 
-                          <li><a class="nav-link" href="{{ path('fos_user_registration_register') }}">Inscription</a></li> 
-                          -->
+                        <li><a class="nav-link link" href="{{ path('fos_user_security_login') }}">Connexion</a></li>
+                        
+                        <li><a class="nav-link link" href="{{ path('fos_user_registration_register') }}">Inscription</a></li> 
+                          
                       </ul>
                   </li>
               {% endif %}
+                </ul>
+              </li>
+
           </ul>
         </div>
       </div>
@@ -81,7 +89,6 @@
             <div class="col-lg-12">
               <span class="col-lg-10">Copyright &copy; Kartage 2017</span>
 
-              <a class="nav-contact text-right" href="{{ path('contact') }}">Contact</a>
             </div>
           </div>
         </div>

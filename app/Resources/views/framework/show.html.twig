@@ -1,0 +1,50 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block body %}
+    <h1>framework {{framework.title }}</h1>
+
+
+<div class="container">
+         
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Titre</th>
+        <th>Language</th>        
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+        
+            <tr>
+
+                <td> {{ framework.id }} </td>
+                <td>{{ framework.title }}</td>
+                <td>{{ framework.language }}</td>
+
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_framework_edit', { 'id': framework.id }) }}">Modifier</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_framework_index') }}">Retour à la liste</a>
+                        </li>
+                        <li>
+                            {{ form_start(delete_form) }}
+                                <input type="submit" value="Delete">
+                            {{ form_end(delete_form) }}
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+
+        
+
+    </tbody>
+  </table>
+</div>
+    
+{% endblock %}
+

@@ -1,0 +1,40 @@
+{% extends 'admin/index.html.twig' %}
+{% block body %}
+    <h1>Liste des Frameworks</h1>
+
+<div class="container">      
+<p class="text-right"><a class="align-right" href="{{ path('admin_framework_new') }}">Créer une nouvelle catégorie</a> </p><br />    
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Titre</th>
+        <th>Language</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for framework in frameworks %}
+            <tr>
+                <td>{{ framework.id }}</td>
+                <td><a href="{{ path('admin_framework_show', { 'id': framework.id }) }}">{{ framework.title }}</a></td>
+                <td>{{ framework.language }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_framework_show', { 'id': framework.id }) }}">Voir</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_framework_edit', { 'id': framework.id }) }}">modifier</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+
+        {% endfor %}
+
+    </tbody>
+  </table>
+
+</div>
+{% endblock %}

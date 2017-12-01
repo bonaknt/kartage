@@ -7,7 +7,8 @@ use AppBundle\Entity\SubCategory;
 use AppBundle\Entity\Link;
 use AppBundle\Entity\Users;
 use AppBundle\Form\UsersType;
-
+use AppBundle\Entity\Contact;
+use AppBundle\Form\ContactType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -39,13 +40,40 @@ class DefaultController extends Controller
      * Finds and displays a link entity.
      *
      * @Route("/contact", name="contact")
-     * @Method("GET")
+     * @Method({"GET", "POST"})
      */
-    public function contactAction()
+    public function contactAction(Request $request)
     {
 
-        return $this->render('default/contact.html.twig');
+        $contact = new Contact();
+        $form = $this->createForm('AppBundle\Form\ContactType', $contact);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $mailer = $this->get('mailer');
+            $mailBodyHTML = $this->render('default/email.html.twig', [
+            'mail'                =>     $contact->getEmail(),
+            'name'                =>     $contact->getName(),
+            'subject'               =>     $contact->getSubject(),
+            'content'             =>     $contact->getContent(),
+            ])->getContent();
+
+
+
+            $email = $this->container->get('app.mailer');
+            $email->sendEmail($mailBodyHTML, $mailer);
+            return $this->redirectToRoute('contact');
+
+        }
+        // replace this example code with whatever you need
+        return $this->render('default/contact.html.twig', array(
+
+            'form' => $form->createView(),
+        ));
+
     }
+
 
     /**
      * Finds and displays a link entity.
@@ -61,40 +89,6 @@ class DefaultController extends Controller
         ));
     }
 
-    /**
-     * Finds and displays a category entity.
-     *
-     * @Route("/register/", name="register")
-     * @Method("GET")
-     */
-    public function registerAction(Request $request)
-    {
-
-        // 1) build the form
-        $user = new Users();
-        $form = $this->createForm(UsersType::class, $user);
-
-        // 2) handle the submit (will only happen on POST)
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            // 3) Encode the password (you could also do this via Doctrine listener)
-            //$password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
-            $user->setEnabled(1);
-
-            // 4) save the User!
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
-
-            // ... do any other work - like sending them an email, etc
-            // maybe set a "flash" success message for the user
-            return $this->redirectToRoute('homepage');
-        }
-        return $this->render('default/register.html.twig', array(
-            'form' => $form->createView()
-        ));
-    }
 
     /**
      * Finds and displays a category entity.
@@ -150,13 +144,42 @@ class DefaultController extends Controller
     	$em = $this->getDoctrine()->getManager();
 
         $subCategories = $em->getRepository('AppBundle:SubCategory')->findAll();
-        $category = $em	->getRepository('AppBundle:Category')
-                         ->find($id);
+        $category = $em	->getRepository('AppBundle:Category')->find($id);
+        $framework = $em ->getRepository('AppBundle:Framework')->byLanguage($id);
+
 
         //dump($category); die();
         return $this->render('default/category.html.twig', array(
             'category' => $category,
             'subCategories' => $subCategories,
+            'framework'     => $framework,
+        ));
+    }
+
+    /**
+     * Finds and displays a category entity.
+     *
+     * @Route("/framework/{id}/{idFramework}", name="framework_show")
+     * @Method("GET")
+     */
+    public function showFrameworkAction($id, $idFramework)
+    {
+        //$id = 3;
+        //dump($id); die();
+        $em = $this->getDoctrine()->getManager();
+
+        $subCategories = $em->getRepository('AppBundle:SubCategory')->findAll();
+        //$category = $em ->getRepository('AppBundle:Category')->find($id);
+        $framework = $em ->getRepository('AppBundle:Framework')->find($idFramework);
+
+        $category = $em ->getRepository('AppBundle:Category')->find($id);
+
+
+        //dump($category); die();
+        return $this->render('default/frameworkshow.html.twig', array(
+            'subCategories' => $subCategories,
+            'framework'     => $framework,
+            'category'   => $category, 
         ));
     }
 
@@ -171,17 +194,51 @@ class DefaultController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
+        $published = true;
+        $idFramework = 0;
+        $pagination = $this->container->get('app.pagination');
+        $categorie = $em->getRepository('AppBundle:Link')->byCategorie($id);
 
-        $categorie = $em ->getRepository('AppBundle:Link')
-                         ->byCategorie($id);
-
-        $links = $em    ->getRepository('AppBundle:Link')
-                         ->bySousCategorie($idSousCategorie, $id);
+        $pagesTotales = $pagination->paginationLienIndex($em, $published, $idSousCategorie, $id, $idFramework)[0];
+        $pageCourante = $pagination->paginationLienIndex($em, $published, $idSousCategorie, $id, $idFramework)[1];
+        $links = $pagination->paginationLienIndex($em, $published, $idSousCategorie, $id, $idFramework)[2];
 
         return $this->render('default/subcategory.html.twig', array(
             //'subCategory' => $subCategory,
             'links'		  => $links,
-            'categorie'   => $categorie,	
+            'categorie'   => $categorie,
+            'pagesTotales' => $pagesTotales, 
+            'pageCourante' => $pageCourante,	
+        )); 
+    }
+
+    /**
+     * Finds and displays a subCategory entity.
+     *
+     * @Route("/framework/{id}/{idFramework}/{idSousCategorie}", name="framework_subcategorie_show")
+     * @Method("GET")
+     */
+    public function showSubFrameworkAction($idSousCategorie, $id, $idFramework)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $published = true;
+
+        $pagination = $this->container->get('app.pagination');
+
+        $categorie = $em ->getRepository('AppBundle:Link')->byCategorie($id);
+
+        $pagesTotales = $pagination->paginationLienIndex($em, $published, $idSousCategorie, $id, $idFramework)[0];
+        $pageCourante = $pagination->paginationLienIndex($em, $published, $idSousCategorie, $id, $idFramework)[1];
+        $links = $pagination->paginationLienIndex($em, $published, $idSousCategorie, $id, $idFramework)[2];
+
+        return $this->render('default/subcategory.html.twig', array(
+            //'subCategory' => $subCategory,
+            'links'       => $links,
+            'categorie'   => $categorie,
+            'pagesTotales' => $pagesTotales, 
+            'pageCourante' => $pageCourante,     
         )); 
     }
 

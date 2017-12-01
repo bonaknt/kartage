@@ -57,6 +57,11 @@ class Link
     private $date;
 
     /**
+     * @ORM\Column(name="published", type="boolean")
+     */
+    private $published = false;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="links")
      * @ORM\JoinColumn(nullable=false)
      * @ORM\Column(name="categories", type="integer")
@@ -70,11 +75,17 @@ class Link
      */
     private $sousCategories;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Framework", inversedBy="links")
+     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(name="framework", type="integer")
+     */
+    private $frameworks;
+
 
     public function __construct()
     {
         $this->date = new \DateTime();
-        $this->addUser = "admin";
     }
 
     /**
@@ -253,5 +264,53 @@ class Link
     public function getSousCategories()
     {
         return $this->sousCategories;
+    }
+
+    /**
+     * Set published
+     *
+     * @param boolean $published
+     *
+     * @return Link
+     */
+    public function setPublished($published)
+    {
+        $this->published = $published;
+
+        return $this;
+    }
+
+    /**
+     * Get published
+     *
+     * @return boolean
+     */
+    public function getPublished()
+    {
+        return $this->published;
+    }
+
+    /**
+     * Set frameworks
+     *
+     * @param integer $frameworks
+     *
+     * @return Link
+     */
+    public function setFrameworks($frameworks)
+    {
+        $this->frameworks = $frameworks;
+
+        return $this;
+    }
+
+    /**
+     * Get frameworks
+     *
+     * @return integer
+     */
+    public function getFrameworks()
+    {
+        return $this->frameworks;
     }
 }

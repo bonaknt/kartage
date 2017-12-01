@@ -60,13 +60,6 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
 
-# Swiftmailer Configuration
-swiftmailer:
-    transport: '%mailer_transport%'
-    host: '%mailer_host%'
-    username: '%mailer_user%'
-    password: '%mailer_password%'
-    spool: { type: memory }
 
 # Stof\DoctrineExtensionsBundle configuration
 
@@ -88,3 +81,12 @@ fos_user:
 twig:
     form_themes:
         - 'bootstrap_3_layout.html.twig'
+
+swiftmailer:
+    transport:  smtp
+    transport:  smtp
+    encryption: ssl
+    auth_mode:  login
+    host:       mail.smtp2go.com
+    username:   bonaknt@gmail.com
+    password:   Islam4545@@

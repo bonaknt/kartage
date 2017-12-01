@@ -3,18 +3,20 @@
 {% block body %}
     <h1 class="titre-marge">Lien</h1>
 
-    <table>
+<div class="container">
+        
+    <table class="table table-striped">
         <tbody>
             <tr>
                 <th>Id</th>
                 <td>{{ link.id }}</td>
             </tr>
             <tr>
-                <th>Title</th>
+                <th>Titre</th>
                 <td>{{ link.title }}</td>
             </tr>
             <tr>
-                <th>Link</th>
+                <th>Lien</th>
                 <td><a href="{{ link.link }}">{{ link.link }}</a></td>
             </tr>
             <tr>
@@ -25,12 +27,9 @@
                 <th>Utilisateur</th>
                 <td>{{ link.addUser }}</td>
             </tr>
-            <tr>
-                <th>Date</th>
-                <td>{% if link.date %}{{ link.date|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
         </tbody>
     </table>
+</div>
 
     <ul>
         <li>

@@ -22,16 +22,18 @@
 
                 <td> {{ link.id }} </td>
                 <td>{{ link.title }}</td>
-                <td>{{ link.link }}</td>
-                <td>{{ link.description}}</td>
+                <td><a href="{{ link.link }}">{{ link.link | truncate(50) }}</a></td>
+                <td>{{ link.description | truncate(50) }}</td>
                 <td>
                     <ul>
                         <li>
                             <a href="{{ path('link_show', { 'id': link.id }) }}">Voir</a>
                         </li>
+                        {% if app.user and is_granted('ROLE_ADMIN') %}
                         <li>
                             <a href="{{ path('link_edit', { 'id': link.id }) }}">Modifier</a>
                         </li>
+                        {% endif %}
                     </ul>
                 </td>
             </tr>
@@ -40,6 +42,22 @@
 
     </tbody>
   </table>
+
+<div class="pagination">
+<span class="text-left">Page </span>
+{% for i in 1..pagesTotales %}
+    {% if i == pageCourante %}
+
+        <span class="paginer"> {{ i }} </span>
+
+    {% else %}
+
+        <a class="paginer" href="?page={{i}}"> {{i}} </a>
+
+    {% endif %}
+{% endfor %}
+</div>
+
 </div>
 
 

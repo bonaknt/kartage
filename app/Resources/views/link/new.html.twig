@@ -40,12 +40,23 @@
     {{ form_label(form.description, "Contenu de l'annonce", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
     {{ form_errors(form.description) }}
     <div class="col-sm-10">
-      {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+      {{ form_widget(form.description, {'attr': {'class': 'form-control editor'}}) }}
     </div>
   </div>
 
+{% if app.user and is_granted('ROLE_ADMIN') %}
+  {# Idem pour un autre champ. #}
+  <div class="form-group">
+    {{ form_label(form.published, "Publication", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    {{ form_errors(form.published) }}
+    <div class="col-sm-1">
+      {{ form_widget(form.published, {'attr': {'class': 'form-control'}}) }}
+    </div>
+  </div>
+{% endif %}
   <div style="margin-left:15px">
   {{ form_row(form.categories) }}
+  {{ form_row(form.frameworks) }}
   {{ form_row(form.sousCategories) }}
   </div>
 

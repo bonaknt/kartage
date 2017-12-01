@@ -44,8 +44,29 @@
     </div>
   </div>
 
+{% if app.user and is_granted('ROLE_ADMIN') %}
+  {# Idem pour un autre champ. #}
+  <div class="form-group">
+    {{ form_label(edit_form.published, "Publication", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    {{ form_errors(edit_form.published) }}
+    <div class="col-sm-1">
+      {{ form_widget(edit_form.published, {'attr': {'class': 'form-control'}}) }}
+    </div>
+  </div>
+{% endif %}
 
-<input type="submit" value="Modifier" />
+{#
+  <div style="margin-left:15px">
+  {{ form_row(edit_form.categories) }}
+  {{ form_row(edit_form.sousCategories) }}
+  </div>
+#}
+
+    <ul>
+        <li>
+            <input type="submit" value="Modifier" />
+        </li>
+      </lu>
 
   {{ form_rest(edit_form) }}
 

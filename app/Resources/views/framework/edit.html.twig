@@ -1,0 +1,42 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block body %}
+    <h1>Modification framework</h1>
+<div style="width:90%" "class="">
+  {{ form_start(edit_form, {'attr': {'class': 'form-horizontal'}}) }}
+
+  {{ form_errors(edit_form) }}
+
+
+  <div class="form-group">
+
+    {{ form_label(edit_form.title, "Titre du framework", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+    {# Affichage des erreurs pour ce champ précis. #}
+    {{ form_errors(edit_form.title) }}
+
+    <div class="col-sm-10">
+      {# Génération de l'input. #}
+      {{ form_widget(edit_form.title, {'attr': {'class': 'form-control'}}) }}
+    </div>
+  </div>
+
+<input type="submit" value="Modifier" />
+
+  {{ form_rest(edit_form) }}
+
+
+  {{ form_end(edit_form) }}
+</div>
+
+    <ul>
+        <li>
+            <a href="{{ path('category_index') }}">Retour à la liste</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Supprimer">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

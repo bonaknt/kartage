@@ -17,11 +17,31 @@
             </tr>
             <tr>
                 <th>Lien</th>
-                <td>{{ link.link }}</td>
+                <td><a href="{{ link.link }}">{{ link.link }}</a></td>
             </tr>
             <tr>
                 <th>Description</th>
                 <td>{{ link.description }}</td>
+            </tr>
+            <tr>
+                <th>Catégorie</th>
+                {% for categorie in categories %}
+                {% if link.categories == categorie.id %} 
+                <td>
+                    {{ categorie.title }}
+                </td>
+                {% endif %}
+                {% endfor %}
+            </tr>
+            <tr>
+                <th>Sous-Catégorie</th>
+                {% for souscategorie in souscategories %}
+                {% if link.sousCategories == souscategorie.id %} 
+                <td>
+                    {{ souscategorie.title }}
+                </td>
+                {% endif %}
+                {% endfor %}
             </tr>
             <tr>
                 <th>Utilisateur</th>
@@ -38,6 +58,7 @@
         <li>
             <a href="{{ path('link_index') }}">Retour à la liste</a>
         </li>
+        {% if app.user and is_granted('ROLE_ADMIN') %}
         <li>
             <a href="{{ path('link_edit', { 'id': link.id }) }}">Modifier</a>
         </li>
@@ -46,5 +67,6 @@
                 <input type="submit" value="Supprimer">
             {{ form_end(delete_form) }}
         </li>
+        {% endif %}
     </ul>
 {% endblock %}

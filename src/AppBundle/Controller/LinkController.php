@@ -4,10 +4,13 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Link;
 use AppBundle\Entity\Category;
+use AppBundle\Entity\Users;
+
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 /**
@@ -25,12 +28,65 @@ class LinkController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
 
-        $links = $em->getRepository('AppBundle:Link')->findAll();
+        $users = new Users();
+        $user = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $pagination = $this->container->get('app.pagination');
+        $user = $this->getUser();
+        $published = true;
+
+        if (in_array('ROLE_ADMIN', $user->getRoles()) || in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
+
+            $pagesTotales = $pagination->paginationLienAdmin($em, $published)[0];
+            $pageCourante = $pagination->paginationLienAdmin($em, $published)[1];
+            $links = $pagination->paginationLienAdmin($em, $published)[2];
+
+        }
+        else{
+
+            $pagesTotales = $pagination->paginationLienUser($em, $published)[0];
+            $pageCourante = $pagination->paginationLienUser($em, $published)[1];
+            $links = $pagination->paginationLienUser($em, $published)[2];
+        }
 
         return $this->render('link/index.html.twig', array(
             'links' => $links,
+            'pagesTotales' => $pagesTotales, 
+            'pageCourante' => $pageCourante,
+        ));
+    }
+
+
+    /**
+     * Lists all link no validate entities.
+     *
+     * @Route("/non_valide", name="link_non_valide")
+     * @Method("GET")
+     */
+    public function nonValideAction(Request $request)
+    {
+        $users = new Users();
+
+        $em = $this->getDoctrine()->getManager();
+        $pagination = $this->container->get('app.pagination');
+        $published = false;
+        $user = $this->getUser();
+        if (in_array('ROLE_ADMIN', $user->getRoles()) || in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
+            
+            $pagesTotales = $pagination->paginationLienAdmin($em, $published)[0];
+            $pageCourante = $pagination->paginationLienAdmin($em, $published)[1];
+            $links = $pagination->paginationLienAdmin($em, $published)[2];
+                    }
+        else{
+            $pagesTotales = $pagination->paginationLienUser($em, $published)[0];
+            $pageCourante = $pagination->paginationLienUser($em, $published)[1];
+            $links = $pagination->paginationLienUser($em, $published)[2];
+        }
+        return $this->render('link/validation.html.twig', array(
+            'links' => $links,
+            'pagesTotales' => $pagesTotales, 
+            'pageCourante' => $pageCourante,
         ));
     }
 
@@ -42,6 +98,8 @@ class LinkController extends Controller
      */
     public function newAction(Request $request)
     {
+        $users = new Users();
+
         $em = $this->getDoctrine()->getManager();
         $categories = $em->getRepository('AppBundle:Category')->findAll();
         $subCategories = $em->getRepository('AppBundle:SubCategory')->findAll();
@@ -55,23 +113,39 @@ class LinkController extends Controller
 
         $category = $repository->findCategory();
         $subCategory = $repository->findSubCategory();
+        $framework = $repository->findFramework();
 
         $form = $this
             ->get('form.factory')
             ->create('AppBundle\Form\LinkType', $link)
 
-            ->add('categories', ChoiceType::class, array(
-                //  on inverse les clés et valeurs
-                'choices'   => array_flip($category),
-                'label'     => "Catégorie",
-                'attr'  => ['class' => 'form-control'],
-            ))
-            ->add('sousCategories', ChoiceType::class, array(
-                //  on inverse les clés et valeurs
-                'choices'   => array_flip($subCategory),
-                'label'     => "Sous-catégorie",
-                'attr'  => ['class' => 'form-control'],
-            ));
+        ->add('categories', ChoiceType::class, array(
+        //  on inverse les clés et valeurs
+        'choices'   => array_flip($category),
+        'label'     => "Catégorie",
+        'attr'  => ['class' => 'form-control'],
+        ))
+
+        ->add('frameworks', ChoiceType::class, array(
+        //  on inverse les clés et valeurs
+        'choices'   => array(
+            'Vide' => array(
+            'Aucun' => 0,
+        ),
+
+            'Frameworks' => array_flip($framework),
+
+        ),
+        'label'     => "Frameworks",
+        'attr'  => ['class' => 'form-control'],
+        ))
+
+        ->add('sousCategories', ChoiceType::class, array(
+            //  on inverse les clés et valeurs
+            'choices'   => array_flip($subCategory),
+            'label'     => "Sous-catégorie",
+            'attr'  => ['class' => 'form-control'],
+        ));
 
         $form->handleRequest($request);
 
@@ -80,8 +154,11 @@ class LinkController extends Controller
             $gestionCat = $gestionCategorie->categorie($category, $form['categories']->getData(), $categories, $subCategory, $form['sousCategories']->getData(), $subCategories);
 
             $em = $this->getDoctrine()->getManager();
+
             $link->setSousCategories($gestionCat->getSousCategories());
             $link->setCategories($gestionCat->getCategories());
+            $link->setAddUser($this->getUser()->getUsername());
+
             $em->persist($link);
             $em->flush();
 
@@ -89,7 +166,7 @@ class LinkController extends Controller
         }
 
         return $this->render('link/new.html.twig', array(
-            'link' => $link,
+            'link'      => $link,
             'form' => $form->createView(),
         ));
     }
@@ -103,9 +180,14 @@ class LinkController extends Controller
     public function showAction(Link $link)
     {
         $deleteForm = $this->createDeleteForm($link);
+        $em = $this->getDoctrine()->getManager();
+        $categories = $em->getRepository('AppBundle:Category')->findAll();
+        $subCategories = $em->getRepository('AppBundle:SubCategory')->findAll();
 
         return $this->render('link/show.html.twig', array(
             'link' => $link,
+            'categories' => $categories,
+            'souscategories' => $subCategories,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -154,6 +236,7 @@ class LinkController extends Controller
 
         return $this->redirectToRoute('link_index');
     }
+
 
     /**
      * Creates a form to delete a link entity.

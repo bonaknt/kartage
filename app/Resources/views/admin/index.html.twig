@@ -6,9 +6,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
+
   <meta name="author" content="">
+
   <title>Kartage</title>
   <!-- Bootstrap core CSS-->
+  <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+  
   <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
   <!-- Custom fonts for this template-->
   <link href="{{ asset('vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
@@ -25,12 +29,21 @@
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+
+      {% if app.user and is_granted('ROLE_ADMIN') %}
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
           <a class="nav-link" href="{{ path('category_index') }}">
             <i class="fa fa-fw fa-table"></i>
             <span class="nav-link-text">Catégories</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+          <a class="nav-link" href="{{ path('admin_framework_index') }}">
+            <i class="fa fa-fw fa-table"></i>
+            <span class="nav-link-text">Framework</span>
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
@@ -39,12 +52,21 @@
             <span class="nav-link-text">Sous-Catégories</span>
           </a>
         </li>
+        {% endif %}
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
           <a class="nav-link" href="{{ path('link_index') }}">
             <i class="fa fa-fw fa-link"></i>
-            <span class="nav-link-text">Liens</span>
+            <span class="nav-link-text">Liens validés</span>
           </a>
         </li>
+
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+          <a class="nav-link" href="{{ path('link_non_valide') }}">
+            <i class="fa fa-fw fa-link"></i>
+            <span class="nav-link-text">Liens non-validés</span>
+          </a>
+        </li>
+
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
           <a class="nav-link" href="{{ path('homepage') }}">
             <i class="fa fa-fw fa-angle-left"></i>

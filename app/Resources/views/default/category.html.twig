@@ -21,6 +21,22 @@
           {% endfor %}
         </div>
       </div>
+      <div>
+      <p>Listes des frameworks : </p>
+      <div class="container">
+        <div class="row">
+            {% for frameworks in framework %}
+          <div class="col-lg-4 portfolio-item">
+            <a class="portfolio-link" href="{{ path('framework_show', {'id': category.id, 'idFramework': frameworks.id }) }}" >
+              <div style="background-color:#445567; width:100%;">
+              <span class="tspan" style="text-align:center;">{{ frameworks.title }} </span>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+          </div>
+          </div>
+        </div>
       <a href="{{ path('homepage') }}">Retour à la liste des catégories</a>
     </section>
 
