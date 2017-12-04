@@ -134,7 +134,7 @@ class DefaultController extends Controller
     /**
      * Finds and displays a category entity.
      *
-     * @Route("/{id}", name="categorie_show")
+     * @Route("/categorie/{id}", name="categorie_show")
      * @Method("GET")
      */
     public function showCategoryAction($id)
@@ -186,7 +186,7 @@ class DefaultController extends Controller
     /**
      * Finds and displays a subCategory entity.
      *
-     * @Route("/{id}/{idSousCategorie}", name="subcategorie_show")
+     * @Route("/categorie/{id}/{idSousCategorie}", name="subcategorie_show")
      * @Method("GET")
      */
     public function showSubAction($idSousCategorie, $id)

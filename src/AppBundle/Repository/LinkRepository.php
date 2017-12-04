@@ -83,7 +83,7 @@ class LinkRepository extends \Doctrine\ORM\EntityRepository
          $qb = $this->createQueryBuilder('u')
                     ->select('u')
                     ->where('u.categories = :categorie')
-                    ->orderBy('u.id')
+                    ->orderBy('u.id', 'DESC')
                     ->setParameter('categorie', $categorie);
         return $qb->getQuery()->getResult();
     }
@@ -96,7 +96,7 @@ class LinkRepository extends \Doctrine\ORM\EntityRepository
                     ->andWhere('u.categories = :categorie')
                     ->andWhere('u.frameworks = :framework')
                     ->andWhere('u.published = :published')
-                    ->orderBy('u.id')
+                    ->orderBy('u.id', 'DESC')
                     ->setParameter('sousCategorie', $sousCategorie)
                     ->setParameter('categorie', $categorie)
                     ->setParameter('published', $published)
@@ -112,7 +112,7 @@ class LinkRepository extends \Doctrine\ORM\EntityRepository
                     ->andWhere('u.categories = :categorie')
                     ->andWhere('u.frameworks = :framework')
                     ->andWhere('u.published = :published')
-                    ->orderBy('u.id')
+                    ->orderBy('u.id', 'DESC')
                     ->setFirstResult($offset)
    					->setMaxResults($limit)
                     ->setParameter('sousCategorie', $sousCategorie)
@@ -128,7 +128,7 @@ class LinkRepository extends \Doctrine\ORM\EntityRepository
                     ->select('u')
                     ->where('u.addUser = :user')
                     ->andWhere('u.published = :published')
-                    ->orderBy('u.id')
+                    ->orderBy('u.id', 'DESC')
                     ->setParameter('user', $user)
                     ->setFirstResult($offset)
    					->setMaxResults($limit)
@@ -141,7 +141,7 @@ class LinkRepository extends \Doctrine\ORM\EntityRepository
          $qb = $this->createQueryBuilder('u')
                     ->select('u')
                     ->where('u.published = :published')
-                    ->orderBy('u.id')
+                    ->orderBy('u.id', 'DESC')
                     ->setFirstResult($offset)
    					->setMaxResults($limit)
                     ->setParameter('published', $published);
@@ -154,7 +154,7 @@ class LinkRepository extends \Doctrine\ORM\EntityRepository
                     ->select('u')
                     ->where('u.addUser = :user')
                     ->andWhere('u.published = :published')
-                    ->orderBy('u.id')
+                    ->orderBy('u.id', 'DESC')
                     ->setParameter('user', $user)
                     ->setParameter('published', $published);
         return $qb->getQuery()->getResult();
@@ -165,7 +165,7 @@ class LinkRepository extends \Doctrine\ORM\EntityRepository
          $qb = $this->createQueryBuilder('u')
                     ->select('u')
                     ->where('u.published = :published')
-                    ->orderBy('u.id')
+                    ->orderBy('u.id', 'DESC')
                     ->setParameter('published', $published);
         return $qb->getQuery()->getResult();
     }

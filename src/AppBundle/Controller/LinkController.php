@@ -38,16 +38,16 @@ class LinkController extends Controller
 
         if (in_array('ROLE_ADMIN', $user->getRoles()) || in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
 
-            $pagesTotales = $pagination->paginationLienAdmin($em, $published)[0];
-            $pageCourante = $pagination->paginationLienAdmin($em, $published)[1];
-            $links = $pagination->paginationLienAdmin($em, $published)[2];
+            $pagesTotales = $pagination->paginationLienAdmin($em, $published, $user)[0];
+            $pageCourante = $pagination->paginationLienAdmin($em, $published, $user)[1];
+            $links = $pagination->paginationLienAdmin($em, $published, $user)[2];
 
         }
         else{
 
-            $pagesTotales = $pagination->paginationLienUser($em, $published)[0];
-            $pageCourante = $pagination->paginationLienUser($em, $published)[1];
-            $links = $pagination->paginationLienUser($em, $published)[2];
+            $pagesTotales = $pagination->paginationLienUser($em, $published, $user)[0];
+            $pageCourante = $pagination->paginationLienUser($em, $published, $user)[1];
+            $links = $pagination->paginationLienUser($em, $published, $user)[2];
         }
 
         return $this->render('link/index.html.twig', array(
@@ -74,14 +74,14 @@ class LinkController extends Controller
         $user = $this->getUser();
         if (in_array('ROLE_ADMIN', $user->getRoles()) || in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
             
-            $pagesTotales = $pagination->paginationLienAdmin($em, $published)[0];
-            $pageCourante = $pagination->paginationLienAdmin($em, $published)[1];
-            $links = $pagination->paginationLienAdmin($em, $published)[2];
+            $pagesTotales = $pagination->paginationLienAdmin($em, $published, $user)[0];
+            $pageCourante = $pagination->paginationLienAdmin($em, $published, $user)[1];
+            $links = $pagination->paginationLienAdmin($em, $published, $user)[2];
                     }
         else{
-            $pagesTotales = $pagination->paginationLienUser($em, $published)[0];
-            $pageCourante = $pagination->paginationLienUser($em, $published)[1];
-            $links = $pagination->paginationLienUser($em, $published)[2];
+            $pagesTotales = $pagination->paginationLienUser($em, $published, $user)[0];
+            $pageCourante = $pagination->paginationLienUser($em, $published, $user)[1];
+            $links = $pagination->paginationLienUser($em, $published, $user)[2];
         }
         return $this->render('link/validation.html.twig', array(
             'links' => $links,

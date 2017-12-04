@@ -19,7 +19,7 @@ class Paginer
    * @param string $text
    * @return bool
    */
-  public function paginationLienAdmin($em, $published)
+  public function paginationLienAdmin($em, $published, $user)
   {
     $lienParPage = 10;
 
@@ -52,11 +52,11 @@ class Paginer
    * @param string $text
    * @return bool
    */
-  public function paginationLienUser($em, $published)
+  public function paginationLienUser($em, $published, $user)
   {
     $lienParPage = 10;
 
-    $lienParPage = $em->getRepository('AppBundle:Link')->byUserTotal($this->getUser()->getUsername(), $published);
+    $liensTotal = $em->getRepository('AppBundle:Link')->byUserTotal($user->getUsername(), $published);
 
     $liensTotal = count($liensTotal);
 
@@ -70,7 +70,7 @@ class Paginer
     }
     $depart = ($pageCourante-1)*$lienParPage;
 
-    $links = $em->getRepository('AppBundle:Link')->byUser($this->getUser()->getUsername(), $published, $depart, $lienParPage);
+    $links = $em->getRepository('AppBundle:Link')->byUser($user->getUsername(), $published, $depart, $lienParPage);
 
     $forRender = array($pagesTotales, $pageCourante, $links);
 
